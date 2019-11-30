@@ -1,4 +1,11 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+	<title>React App</title>
+</head>
 
 <body>
 	<script>
@@ -7,15 +14,15 @@
 		window.onload = function () {
 
 			function parseFunc() {
-				var xmlhttps;
-				if (window.xmlhttpsRequest) { // код для IE7+, Firefox, Chrome, Opera, Safari
-					xmlhttps = new xmlhttpsRequest();
+				var xmlhttp;
+				if (window.XMLHttpRequest) { // код для IE7+, Firefox, Chrome, Opera, Safari
+					xmlhttp = new XMLHttpRequest();
 				} else { // код для IE6, IE5
-					xmlhttps = new ActiveXObject("Microsoft.xmlhttps");
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 				}
-				xmlhttps.onreadystatechange = function () {
-					if (xmlhttps.readyState == 4 && xmlhttps.status == 200) {
-						var json = xmlhttps.responseText;
+				xmlhttp.onreadystatechange = function () {
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+						var json = xmlhttp.responseText;
 						var data = JSON.parse(json);
 						//console.log(data[0].attr_id);
 						vavg = 0;
@@ -28,12 +35,12 @@
 							notifyMe();
 						document.getElementById("myDiv").innerText = "Vavg: " + vavg;
 						document.getElementById("myDiv").innerText += "\n date_beg_born: " + new Date(Data.getYear(),
-								Data.getMonth(), Data.getDay(), Data.getHours(), Data.getMinutes(), Data.getSeconds()
-								) + "\n\n";
+							Data.getMonth(), Data.getDay(), Data.getHours(), Data.getMinutes(), Data.getSeconds()
+						) + "\n\n";
 					}
 				};
-				xmlhttps.open("GET", "http://13.69.157.123/get-last-data", true);
-				xmlhttps.send();
+				xmlhttp.open("GET", "http://13.69.157.123/get-last-data", true);
+				xmlhttp.send();
 			}
 
 			setInterval(parseFunc, 1000);
