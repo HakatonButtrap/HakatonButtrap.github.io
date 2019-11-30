@@ -8,10 +8,10 @@ window.onload = function () {
 
     function parseFunc() {
 var xmlhttp;
-if (window.XMLHttpRequest) { // РєРѕРґ РґР»СЏ IE7+, Firefox, Chrome, Opera, Safari
+if (window.XMLHttpRequest) { // код для IE7+, Firefox, Chrome, Opera, Safari
 xmlhttp=new XMLHttpRequest();
 }
-else { // РєРѕРґ РґР»СЏ IE6, IE5
+else { // код для IE6, IE5
 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 }
 xmlhttp.onreadystatechange=function() {
@@ -47,7 +47,7 @@ Data = new Date();
 var dps = []; // dataPoints
 var chart = new CanvasJS.Chart("chartContainer", {
 	title :{
-		text: "Р“СЂР°С„РёРє РїРѕРєР°Р·Р°С‚РµР»СЏ СЃРєРѕСЂРѕСЃС‚Рё РІ СЂРµР°Р»СЊРЅРѕРј РІСЂРµРјРµРЅРё"
+		text: "График показателя скорости в реальном времени"
 	},
 	axisY: {
 		includeZero: false
@@ -135,16 +135,16 @@ setInterval(function(){updateChart()}, updateInterval);
 
 }
 function notifyMe() {
-      var notification = new Notification("РќР›РњРљ", {
+      var notification = new Notification("НЛМК", {
         tag: "ache-mail",
-        body: "РЎСЂРµРґРЅСЏСЏ СЃРєРѕСЂРѕСЃС‚СЊ РЅРёР¶Рµ РґРѕРїСѓСЃС‚РёРјРѕР№ (123 РѕР±/РјРёРЅ)",
+        body: "Средняя скорость ниже допустимой (123 об/мин)",
         icon: "img/iim.png"
       });
     }
 
     function notifSet() {
       if (!("Notification" in window))
-        alert("Р’Р°С€ Р±СЂР°СѓР·РµСЂ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ СѓРІРµРґРѕРјР»РµРЅРёСЏ.");
+        alert("Ваш браузер не поддерживает уведомления.");
       else if (Notification.permission === "granted")
         setTimeout(notifyMe, 2000);
       else if (Notification.permission !== "denied") {
