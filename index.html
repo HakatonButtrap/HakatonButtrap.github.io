@@ -1,168 +1,177 @@
 <html>
+
 <body>
-<script>
+	<script>
+		var vavg = 133;
 
-var vavg = 133;
+		window.onload = function () {
 
-window.onload = function () {
+			function parseFunc() {
+				var xmlhttps;
+				if (window.xmlhttpsRequest) { // код для IE7+, Firefox, Chrome, Opera, Safari
+					xmlhttps = new xmlhttpsRequest();
+				} else { // код для IE6, IE5
+					xmlhttps = new ActiveXObject("Microsoft.xmlhttps");
+				}
+				xmlhttps.onreadystatechange = function () {
+					if (xmlhttps.readyState == 4 && xmlhttps.status == 200) {
+						var json = xmlhttps.responseText;
+						var data = JSON.parse(json);
+						//console.log(data[0].attr_id);
+						vavg = 0;
+						for (var i = 0; i < 100; i++) {
+							vavg += data[i].vavg;
+						}
 
-    function parseFunc() {
-var xmlhttp;
-if (window.XMLHttpRequest) { // код для IE7+, Firefox, Chrome, Opera, Safari
-xmlhttp=new XMLHttpRequest();
-}
-else { // код для IE6, IE5
-xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-}
-xmlhttp.onreadystatechange=function() {
-if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-var json = xmlhttp.responseText;
-var data = JSON.parse(json);
-//console.log(data[0].attr_id);
-vavg = 0;
-for (var i = 0; i < 100; i++) {
-vavg += data[i].vavg;
-}
+						vavg = vavg / 100;
+						if (vavg <= 133.46)
+							notifyMe();
+						document.getElementById("myDiv").innerText = "Vavg: " + vavg;
+						document.getElementById("myDiv").innerText += "\n date_beg_born: " + new Date(Data.getYear(),
+								Data.getMonth(), Data.getDay(), Data.getHours(), Data.getMinutes(), Data.getSeconds()
+								) + "\n\n";
+					}
+				};
+				xmlhttps.open("GET", "http://13.69.157.123/get-last-data", true);
+				xmlhttps.send();
+			}
 
-vavg = vavg / 100;
-if (vavg <= 133.46)
-	notifyMe();
-document.getElementById("myDiv").innerText = "Vavg: " + vavg;
-document.getElementById("myDiv").innerText += "\n date_beg_born: " + new Date(Data.getYear(), Data.getMonth(), Data.getDay(), Data.getHours(), Data.getMinutes(), Data.getSeconds()) + "\n\n";
-}
-};
-xmlhttp.open("GET","http://13.69.157.123/get-last-data",true);
-xmlhttp.send();
-}
-
-setInterval(parseFunc, 1000);
-
-
-//////
+			setInterval(parseFunc, 1000);
 
 
-
-///////
-Data = new Date();
-var dps = []; // dataPoints
-var chart = new CanvasJS.Chart("chartContainer", {
-	title :{
-		text: "График показателя скорости в реальном времени"
-	},
-	axisY: {
-		includeZero: false
-	},
-	axisX:{
-		labelFormatter: function (e) {
-				return CanvasJS.formatDate( e.value, "hh:mm:ss");},
-        interval:1, 
-        intervalType: "second",        
-        // valueFormatString: "hh:mm:ss", 
-        // labelAngle: -20
-      },  
-	toolTip:{
-		
-   		contentFormatter: function (e) {
-			return "Second: " + e.entries[0].dataPoint.x.getSeconds() + "| Vavg: " + e.entries[0].dataPoint.y},  
- 	},
-	data: [{
-		// content: "{x} {y}",
-		// toolTipContent: "{x} sales",
-		type: "line",
-		dataPoints: dps,
-		// xValueType: "dateTime",
-		// valueFormatString: "hh:mm:ss", 
-		
-	}]
-});
-Data = new Date();
-
-// var hour = Data.getHours();
-// var minutes = Data.getMinutes();
-// var seconds = Data.getSeconds();
-// console.log(new Date(year, hour, minutes, seconds));
+			//////
 
 
 
-var xVal = new Date(Data.getYear(), Data.getMonth(), Data.getDay(), Data.getHours(), Data.getMinutes(), Data.getSeconds());
-// var xVal = Data(())
-// var xVal = new Date();
-var yVal = 130; 
-var updateInterval = 1000;
-var dataLength = 10; // number of dataPoints visible at any point
-// console.log(getVavg());
+			///////
+			Data = new Date();
+			var dps = []; // dataPoints
+			var chart = new CanvasJS.Chart("chartContainer", {
+				title: {
+					text: "График показателя скорости в реальном времени"
+				},
+				axisY: {
+					includeZero: false
+				},
+				axisX: {
+					labelFormatter: function (e) {
+						return CanvasJS.formatDate(e.value, "hh:mm:ss");
+					},
+					interval: 1,
+					intervalType: "second",
+					// valueFormatString: "hh:mm:ss", 
+					// labelAngle: -20
+				},
+				toolTip: {
+
+					contentFormatter: function (e) {
+						return "Second: " + e.entries[0].dataPoint.x.getSeconds() + "| Vavg: " + e.entries[0]
+							.dataPoint.y
+					},
+				},
+				data: [{
+					// content: "{x} {y}",
+					// toolTipContent: "{x} sales",
+					type: "line",
+					dataPoints: dps,
+					// xValueType: "dateTime",
+					// valueFormatString: "hh:mm:ss", 
+
+				}]
+			});
+			Data = new Date();
+
+			// var hour = Data.getHours();
+			// var minutes = Data.getMinutes();
+			// var seconds = Data.getSeconds();
+			// console.log(new Date(year, hour, minutes, seconds));
 
 
-function updateChart(count) {
-    Data = new Date();
-	if (vavg <=133.46 ) {
-    	chart.toolTip.set("fontColor", "red");
-		chart.data[0].set("color", "red");
-	}
-	else{
-		chart.toolTip.set("fontColor", "blue");
-		chart.data[0].set("color", "blue");
-	}
 
-	
-	// var hour = Data.getHours();
-	// var minutes = Data.getMinutes();
-	// var seconds = Data.getSeconds();
-	
+			var xVal = new Date(Data.getYear(), Data.getMonth(), Data.getDay(), Data.getHours(), Data.getMinutes(), Data
+				.getSeconds());
+			// var xVal = Data(())
+			// var xVal = new Date();
+			var yVal = 130;
+			var updateInterval = 1000;
+			var dataLength = 10; // number of dataPoints visible at any point
+			// console.log(getVavg());
 
-	count = count || 1;
 
-	for (var j = 0; j < count; j++) {
-		yVal = vavg;
-		xVal = new Date(Data.getYear(), Data.getMonth(), Data.getDay(),  Data.getHours(), Data.getMinutes(), Data.getSeconds());
-		// var xVal = new Date();
-		dps.push({
-			x: xVal,
-			y: yVal
-		});
-		// xVal++;
-	}
+			function updateChart(count) {
+				Data = new Date();
+				if (vavg <= 133.46) {
+					chart.toolTip.set("fontColor", "red");
+					chart.data[0].set("color", "red");
+				} else {
+					chart.toolTip.set("fontColor", "blue");
+					chart.data[0].set("color", "blue");
+				}
 
-	if (dps.length > dataLength) {
-		dps.shift();
-	}
 
-	chart.render();
-};
+				// var hour = Data.getHours();
+				// var minutes = Data.getMinutes();
+				// var seconds = Data.getSeconds();
 
-updateChart(dataLength);
-setInterval(function(){updateChart()}, updateInterval);
 
-}
-function notifyMe() {
-      var notification = new Notification("НЛМК", {
-        tag: "ache-mail",
-        body: "Средняя скорость ниже допустимой (123 об/мин)",
-        icon: "img/iim.png"
-      });
-    }
+				count = count || 1;
 
-    function notifSet() {
-      if (!("Notification" in window))
-        alert("Ваш браузер не поддерживает уведомления.");
-      else if (Notification.permission === "granted")
-        setTimeout(notifyMe, 2000);
-      else if (Notification.permission !== "denied") {
-        Notification.requestPermission(function (permission) {
-          if (!('permission' in Notification))
-            Notification.permission = permission;
-          if (permission === "granted")
-            setTimeout(notifyMe, 2000);
-        });
-      }
-    }
-</script>
+				for (var j = 0; j < count; j++) {
+					yVal = vavg;
+					xVal = new Date(Data.getYear(), Data.getMonth(), Data.getDay(), Data.getHours(), Data.getMinutes(),
+						Data.getSeconds());
+					// var xVal = new Date();
+					dps.push({
+						x: xVal,
+						y: yVal
+					});
+					// xVal++;
+				}
 
-  
+				if (dps.length > dataLength) {
+					dps.shift();
+				}
 
-<!-- <div id="myDiv"></div> -->
-<div id="myDiv"></div>
-<div id="chartContainer" style="height: 300px; width: 100%;"></div>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+				chart.render();
+			};
+
+			updateChart(dataLength);
+			setInterval(function () {
+				updateChart()
+			}, updateInterval);
+
+		}
+
+		function notifyMe() {
+			var notification = new Notification("НЛМК", {
+				tag: "ache-mail",
+				body: "Средняя скорость ниже допустимой (123 об/мин)",
+				icon: "img/iim.png"
+			});
+		}
+
+		function notifSet() {
+			if (!("Notification" in window))
+				alert("Ваш браузер не поддерживает уведомления.");
+			else if (Notification.permission === "granted")
+				setTimeout(notifyMe, 2000);
+			else if (Notification.permission !== "denied") {
+				Notification.requestPermission(function (permission) {
+					if (!('permission' in Notification))
+						Notification.permission = permission;
+					if (permission === "granted")
+						setTimeout(notifyMe, 2000);
+				});
+			}
+		}
+	</script>
+
+
+
+	<!-- <div id="myDiv"></div> -->
+	<div id="myDiv"></div>
+	<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
+
 </html>
